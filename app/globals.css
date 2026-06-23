@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  /* Green Gold Connect — marka token'ları (landing/demo) */
+  --gg-primary: #2d7a3a;
+  --gg-secondary: #4caf50;
+  --gg-accent: #8bc34a;
+  --gg-gold: #f5a623;
+  --gg-dark: #1a1a2e;
+  --gg-surface: #16213e;
+  --gg-text: #ffffff;
+  --gg-muted: #94a3b8;
+
+  /* Dashboard — açık tema paleti */
+  --bg: #f7faf8;
+  --surface: #ffffff;
+  --border: #e5ebe6;
+  --primary: #2d7a3a;
+  --primary-soft: #eaf6ec;
+  --gold: #f5a623;
+  --text: #1a2e1d;
+  --muted: #6b8270;
+
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* marka */
+  --color-gg-primary: var(--gg-primary);
+  --color-gg-secondary: var(--gg-secondary);
+  --color-gg-accent: var(--gg-accent);
+  --color-gg-gold: var(--gg-gold);
+  --color-gg-dark: var(--gg-dark);
+  --color-gg-surface: var(--gg-surface);
+  --color-gg-muted: var(--gg-muted);
+
+  /* dashboard semantik */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-gold: var(--gold);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
