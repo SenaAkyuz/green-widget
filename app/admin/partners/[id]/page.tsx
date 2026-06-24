@@ -29,7 +29,7 @@ async function resolveBase(): Promise<string> {
 
 function snippet(merchantId: string, currency: string, type: string, base: string) {
   return `<!-- checkout/ödeme sayfanızın </body> etiketinden hemen önce -->
-<script src="${widgetSrc(base)}"
+<script async src="${widgetSrc(base)}"
   data-merchant-id="${merchantId}"
   data-amount="{{cart_total}}"
   data-currency="${currency}"

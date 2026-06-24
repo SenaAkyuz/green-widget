@@ -40,6 +40,7 @@ Kırıcı değişiklikler `/v2/` altında yayınlanır; `/v1/` sabit kalır, par
 ```html
 <!-- checkout/ödeme sayfanızın </body>'sinden hemen önce -->
 <script
+  async
   src="https://greengold-widget.vercel.app/v1/gg-widget.js"
   data-merchant-id="MERCHANT001"
   data-amount="850"

@@ -62,6 +62,7 @@ export default function Home() {
           </p>
           <pre className="text-xs sm:text-sm text-[#1a3a22] bg-[#f6faf6] rounded-xl p-4 overflow-x-auto font-mono leading-relaxed border border-border">
 {`<script
+  async
   src="${widgetSrc()}"
   data-merchant-id="MERCHANT001"
   data-amount="850"

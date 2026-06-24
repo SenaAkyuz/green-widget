@@ -11,7 +11,7 @@ const MERCHANT_ID = "MERCHANT001";
 function snippets(amount: number, currency: string, type: string, base: string) {
   return {
     Web: `<!-- checkout/ödeme sayfanızın </body>'sinden hemen önce -->
-<script src="${widgetSrc(base)}"
+<script async src="${widgetSrc(base)}"
   data-merchant-id="${MERCHANT_ID}"
   data-amount="${amount}"
   data-currency="${currency}"
