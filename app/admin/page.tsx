@@ -40,7 +40,7 @@ export default async function OverviewPage({
   ];
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8 min-w-0">
       <AdminHeader
         title="Genel Bakış"
         description={`Tüm partnerler · ${rangeLabel(range)} · TRY karşılığı`}
@@ -50,28 +50,28 @@ export default async function OverviewPage({
       />
 
       {/* KPI grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {cards.map((c) => (
           <div
             key={c.label}
-            className="bg-surface border border-border rounded-2xl shadow-sm p-5"
+            className="min-w-0 bg-surface border border-border rounded-2xl shadow-sm p-5"
           >
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-2">
               <span className="text-xs text-muted">{c.label}</span>
-              <span className="text-lg">{c.icon}</span>
+              <span className="text-lg shrink-0">{c.icon}</span>
             </div>
-            <div className="mt-2 text-2xl font-extrabold text-text">{c.value}</div>
+            <div className="mt-2 text-2xl font-extrabold text-text truncate">{c.value}</div>
           </div>
         ))}
       </div>
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly trend */}
-        <div className="bg-surface border border-border rounded-2xl shadow-sm p-6">
+        <div className="min-w-0 bg-surface border border-border rounded-2xl shadow-sm p-4 sm:p-6">
           <h2 className="text-sm font-bold text-text mb-4">Aylık Gelir Trendi (TRY)</h2>
-          <div className="flex items-end gap-3 h-48">
+          <div className="flex items-end gap-2 sm:gap-3 h-48">
             {monthly_trend.map((m) => (
-              <div key={m.label} className="flex-1 flex flex-col items-center gap-2">
+              <div key={m.label} className="min-w-0 flex-1 flex flex-col items-center gap-2">
                 <div className="w-full flex flex-col justify-end h-40">
                   <div
                     className="w-full bg-gradient-to-t from-[#2d7a3a] to-[#8bc34a] rounded-t-md transition-all"
@@ -79,23 +79,23 @@ export default async function OverviewPage({
                     title={money(m.revenue)}
                   />
                 </div>
-                <span className="text-[10px] text-muted">{m.label}</span>
+                <span className="text-[10px] text-muted truncate max-w-full">{m.label}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Revenue by merchant */}
-        <div className="bg-surface border border-border rounded-2xl shadow-sm p-6">
+        <div className="min-w-0 bg-surface border border-border rounded-2xl shadow-sm p-4 sm:p-6">
           <h2 className="text-sm font-bold text-text mb-4">
             Merchant Bazlı Gelir Dağılımı
           </h2>
           <div className="space-y-3">
             {revenue_by_merchant.map((m) => (
-              <div key={m.merchant_id}>
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="font-medium text-text">{m.name}</span>
-                  <span className="text-muted">{money(m.revenue)}</span>
+              <div key={m.merchant_id} className="min-w-0">
+                <div className="flex justify-between gap-2 text-xs mb-1">
+                  <span className="font-medium text-text truncate min-w-0">{m.name}</span>
+                  <span className="text-muted shrink-0">{money(m.revenue)}</span>
                 </div>
                 <div className="h-2 bg-bg rounded-full overflow-hidden">
                   <div

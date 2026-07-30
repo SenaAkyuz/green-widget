@@ -107,14 +107,15 @@
 
     // --- Stil (izole, host'u bozmaz) ---
     var css =
-      ".gg-card{font-family:-apple-system,Segoe UI,Roboto,sans-serif;border:1px solid #d8ead9;background:#f3faf4;border-radius:12px;padding:14px 16px;margin:12px 0;color:#1a2e1d;max-width:480px;box-sizing:border-box}" +
-      ".gg-row{display:flex;align-items:center;gap:10px}" +
+      ".gg-card{font-family:-apple-system,Segoe UI,Roboto,sans-serif;border:1px solid #d8ead9;background:#f3faf4;border-radius:12px;padding:14px 16px;margin:12px 0;color:#1a2e1d;width:100%;max-width:480px;box-sizing:border-box;overflow-wrap:break-word}" +
+      ".gg-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}" +
       ".gg-cb{width:20px;height:20px;accent-color:#2D7A3A;cursor:pointer;flex:0 0 auto}" +
-      ".gg-title{font-weight:600;font-size:14px;line-height:1.3}" +
+      ".gg-title{font-weight:600;font-size:14px;line-height:1.3;min-width:0;flex:1 1 140px}" +
       ".gg-amt{margin-left:auto;font-weight:700;color:#2D7A3A;white-space:nowrap}" +
       ".gg-sub{font-size:12px;color:#5b7a5f;margin:6px 0 0 30px}" +
-      ".gg-total{display:flex;justify-content:space-between;margin-top:10px;padding-top:10px;border-top:1px dashed #cfe3d0;font-weight:700;font-size:15px}" +
-      ".gg-mark{font-size:10px;color:#9bb59e;text-align:right;margin-top:8px}";
+      ".gg-total{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;margin-top:10px;padding-top:10px;border-top:1px dashed #cfe3d0;font-weight:700;font-size:15px}" +
+      ".gg-mark{font-size:10px;color:#9bb59e;text-align:right;margin-top:8px}" +
+      "@media (max-width:340px){.gg-sub{margin-left:0}}";
     var st = document.createElement("style");
     st.textContent = css;
     document.head.appendChild(st);

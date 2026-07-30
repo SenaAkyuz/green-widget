@@ -4,14 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
 import { DemoToggle } from "./DemoToggle";
-
-const NAV = [
-  { href: "/admin", label: "Genel Bakış", icon: "📊" },
-  { href: "/admin/partners", label: "Partnerler", icon: "🤝" },
-  { href: "/admin/transactions", label: "İşlemler", icon: "💳" },
-  { href: "/admin/payouts", label: "Kazanç", icon: "👛" },
-  { href: "/admin/integration", label: "Entegrasyon", icon: "🔌" },
-];
+import { AdminMobileNav } from "./AdminMobileNav";
+import { NAV, isNavActive } from "./nav";
 
 export default function AdminLayout({
   children,
@@ -21,9 +15,9 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   return (
-    <div className="min-h-screen flex bg-bg text-text">
-      {/* Sidebar */}
-      <aside className="w-60 shrink-0 bg-surface border-r border-border flex flex-col">
+    <div className="min-h-screen flex flex-col md:flex-row bg-bg text-text">
+      {/* Desktop sidebar — md+ */}
+      <aside className="hidden md:flex md:w-60 md:shrink-0 bg-surface border-r border-border flex-col">
         <div className="px-5 py-5 border-b border-border">
           <Link href="/" className="font-extrabold text-base text-text block leading-tight">
             🌿 Green Gold
@@ -34,14 +28,12 @@ export default function AdminLayout({
         </div>
         <nav className="flex-1 py-4">
           {NAV.map((item) => {
-            const active =
-              item.href === "/admin"
-                ? pathname === "/admin"
-                : pathname.startsWith(item.href);
+            const active = isNavActive(item.href, pathname);
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={active ? "page" : undefined}
                 className={`flex items-center gap-3 px-5 py-2.5 text-sm transition-colors ${
                   active
                     ? "bg-primary-soft text-primary font-semibold border-r-2 border-primary"
@@ -69,8 +61,11 @@ export default function AdminLayout({
         </div>
       </aside>
 
+      {/* Mobile top bar + drawer — < md */}
+      <AdminMobileNav />
+
       {/* Main */}
-      <div className="flex-1 overflow-x-hidden">{children}</div>
+      <div className="flex-1 min-w-0 w-full">{children}</div>
     </div>
   );
 }

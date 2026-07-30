@@ -4,9 +4,11 @@
 export function ExportButton({
   rows,
   filename,
+  className = "",
 }: {
   rows: Record<string, unknown>[];
   filename: string;
+  className?: string;
 }) {
   function download() {
     if (!rows.length) return;
@@ -31,7 +33,7 @@ export function ExportButton({
   return (
     <button
       onClick={download}
-      className="text-sm font-semibold border border-border text-text hover:bg-primary-soft px-3.5 py-2 rounded-lg transition-colors"
+      className={`text-sm font-semibold border border-border text-text hover:bg-primary-soft px-3.5 py-2 min-h-11 rounded-lg transition-colors whitespace-nowrap ${className}`}
     >
       ⤓ Dışa Aktar
     </button>

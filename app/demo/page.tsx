@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { SiteHeader } from "../SiteHeader";
 
 // Augment window with the widget's global API.
 declare global {
@@ -64,27 +65,9 @@ export default function DemoPage() {
 
   return (
     <main className="min-h-screen bg-bg text-text flex flex-col">
-      {/* Site header — landing/admin ile uyumlu */}
-      <header className="sticky top-0 z-10 bg-bg/80 backdrop-blur border-b border-border">
-        <div className="flex items-center justify-between px-6 py-4 max-w-6xl mx-auto w-full">
-          <Link href="/" className="font-extrabold text-base">
-            🌿 Green Gold <span className="text-primary">Connect</span>
-          </Link>
-          <nav className="flex items-center gap-1 text-sm">
-            <Link href="/" className="px-3 py-2 rounded-lg text-muted hover:text-text hover:bg-surface">
-              Ana sayfa
-            </Link>
-            <Link
-              href="/admin"
-              className="px-3.5 py-2 rounded-lg bg-primary text-white font-semibold hover:bg-[#256530]"
-            >
-              Admin Dashboard
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader variant="demo" />
 
-      <div className="flex-1 flex flex-col items-center py-10 px-4">
+      <div className="flex-1 flex flex-col items-center py-6 sm:py-10 px-4">
         <div className="mb-5 text-center">
           <span className="inline-block text-xs font-semibold tracking-wide uppercase text-primary bg-primary-soft px-3 py-1 rounded-full">
             BiTaksi ödeme ekranı simülasyonu
@@ -106,10 +89,10 @@ export default function DemoPage() {
             <div className="absolute inset-0 flex items-center justify-center text-primary/40 text-sm">
               🗺️ Rota haritası
             </div>
-            <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-xs font-semibold text-text">
-              <span>📍 {TRIP.from}</span>
-              <span className="text-muted">───────</span>
-              <span>🏁 {TRIP.to}</span>
+            <div className="absolute bottom-3 left-4 right-4 flex items-center flex-wrap justify-between gap-x-2 gap-y-1 text-xs font-semibold text-text">
+              <span className="truncate">📍 {TRIP.from}</span>
+              <span className="text-muted shrink-0">───────</span>
+              <span className="truncate">🏁 {TRIP.to}</span>
             </div>
           </div>
 
@@ -131,9 +114,9 @@ export default function DemoPage() {
 
             {!done ? (
               <>
-                <div className="mt-3 flex justify-between items-center border-t border-border pt-3">
+                <div className="mt-3 flex flex-wrap justify-between items-center gap-x-3 gap-y-1 border-t border-border pt-3">
                   <span className="text-sm font-semibold text-text">Ödenecek Toplam</span>
-                  <span id="trip-total-val" className="text-lg font-extrabold text-primary">
+                  <span id="trip-total-val" className="text-lg font-extrabold text-primary whitespace-nowrap">
                     {TRIP.fare.toLocaleString("tr-TR", { minimumFractionDigits: 2 })} TL
                   </span>
                 </div>

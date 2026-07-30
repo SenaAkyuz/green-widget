@@ -66,7 +66,7 @@ export default async function PartnerDetailPage({
   ];
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8 min-w-0">
       <AdminHeader
         title={merchant.name}
         description={`${merchant.merchant_id} · ${merchant.sector}${
@@ -83,14 +83,14 @@ export default async function PartnerDetailPage({
       </Link>
 
       {/* KPI'lar */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {kpis.map((k) => (
           <div
             key={k.l}
-            className="bg-surface border border-border rounded-2xl shadow-sm p-4"
+            className="min-w-0 bg-surface border border-border rounded-2xl shadow-sm p-4"
           >
             <div className="text-xs text-muted">{k.l}</div>
-            <div className="text-lg font-extrabold text-primary mt-1">{k.v}</div>
+            <div className="text-lg font-extrabold text-primary mt-1 truncate">{k.v}</div>
           </div>
         ))}
       </div>
@@ -134,43 +134,76 @@ export default async function PartnerDetailPage({
       </div>
 
       {/* Son işlemler */}
-      <div className="mt-6 bg-surface border border-border rounded-2xl shadow-sm overflow-x-auto">
+      <div className="mt-6 bg-surface border border-border rounded-2xl shadow-sm">
         <div className="px-5 py-3 text-sm font-bold text-text border-b border-border">
           Son işlemler
         </div>
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left text-xs text-muted border-b border-border">
-              <th className="px-5 py-3 font-medium">Tarih</th>
-              <th className="px-5 py-3 font-medium text-right">Tutar</th>
-              <th className="px-5 py-3 font-medium text-right">Katkı</th>
-              <th className="px-5 py-3 font-medium">Durum</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tx.slice(0, 10).map((t) => (
-              <tr key={t.id} className="border-b border-border last:border-0">
-                <td className="px-5 py-3 text-muted">{date(t.created_at)}</td>
-                <td className="px-5 py-3 text-right text-text">
-                  {money(t.original_amount, t.currency)}
-                </td>
-                <td className="px-5 py-3 text-right font-semibold text-primary">
-                  {t.contribution_selected
-                    ? money(t.contribution_amount, t.currency)
-                    : "—"}
-                </td>
-                <td className="px-5 py-3 text-muted">{t.payment_status}</td>
+
+        {/* Mobil kart listesi — < md */}
+        <div className="md:hidden divide-y divide-border">
+          {tx.slice(0, 10).map((t) => (
+            <div key={t.id} className="p-4">
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-text text-sm">{date(t.created_at)}</span>
+                <span className="shrink-0 text-xs font-semibold text-muted">
+                  {t.payment_status}
+                </span>
+              </div>
+              <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                <div>
+                  <dt className="text-muted">Tutar</dt>
+                  <dd className="text-text mt-0.5">{money(t.original_amount, t.currency)}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Katkı</dt>
+                  <dd className="font-semibold text-primary mt-0.5">
+                    {t.contribution_selected ? money(t.contribution_amount, t.currency) : "—"}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          ))}
+          {tx.length === 0 && (
+            <p className="px-5 py-6 text-center text-muted text-sm">Henüz işlem yok.</p>
+          )}
+        </div>
+
+        {/* Masaüstü tablo — md+ */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-muted border-b border-border">
+                <th className="px-5 py-3 font-medium">Tarih</th>
+                <th className="px-5 py-3 font-medium text-right">Tutar</th>
+                <th className="px-5 py-3 font-medium text-right">Katkı</th>
+                <th className="px-5 py-3 font-medium">Durum</th>
               </tr>
-            ))}
-            {tx.length === 0 && (
-              <tr>
-                <td colSpan={4} className="px-5 py-6 text-center text-muted">
-                  Henüz işlem yok.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tx.slice(0, 10).map((t) => (
+                <tr key={t.id} className="border-b border-border last:border-0">
+                  <td className="px-5 py-3 text-muted">{date(t.created_at)}</td>
+                  <td className="px-5 py-3 text-right text-text">
+                    {money(t.original_amount, t.currency)}
+                  </td>
+                  <td className="px-5 py-3 text-right font-semibold text-primary">
+                    {t.contribution_selected
+                      ? money(t.contribution_amount, t.currency)
+                      : "—"}
+                  </td>
+                  <td className="px-5 py-3 text-muted">{t.payment_status}</td>
+                </tr>
+              ))}
+              {tx.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="px-5 py-6 text-center text-muted">
+                    Henüz işlem yok.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createMerchant } from "./actions";
 
@@ -12,11 +12,24 @@ const SECTORS = [
   { value: "dining", label: "Restoran" },
 ];
 
-export function AddWidgetModal() {
+export function AddWidgetModal({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
   const router = useRouter();
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      triggerRef.current?.focus();
+    };
+  }, [open]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,8 +52,9 @@ export function AddWidgetModal() {
   return (
     <>
       <button
+        ref={triggerRef}
         onClick={() => setOpen(true)}
-        className="text-sm font-semibold bg-primary hover:bg-[#256530] text-white px-3.5 py-2 rounded-lg transition-colors"
+        className={`text-sm font-semibold bg-primary hover:bg-[#256530] text-white px-3.5 py-2 min-h-11 rounded-lg transition-colors whitespace-nowrap ${className}`}
       >
         + Widget Ekle
       </button>
@@ -51,14 +65,20 @@ export function AddWidgetModal() {
           onClick={() => setOpen(false)}
         >
           <div
-            className="bg-surface rounded-2xl shadow-xl border border-border w-full max-w-md p-6"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="add-widget-title"
+            className="bg-surface rounded-2xl shadow-xl border border-border w-full max-w-md max-h-[calc(100dvh-2rem)] overflow-y-auto p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-extrabold text-text">Yeni Widget / Merchant</h2>
+              <h2 id="add-widget-title" className="text-lg font-extrabold text-text">
+                Yeni Widget / Merchant
+              </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-muted hover:text-text text-xl leading-none"
+                aria-label="Kapat"
+                className="flex items-center justify-center w-9 h-9 -mr-1.5 rounded-lg text-muted hover:text-text hover:bg-bg text-xl leading-none"
               >
                 ×
               </button>
@@ -80,7 +100,7 @@ export function AddWidgetModal() {
                   ))}
                 </select>
               </label>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Field label="Şehir" name="city" placeholder="İstanbul" />
                 <label className="block">
                   <span className="text-xs text-muted">Para birimi</span>
@@ -95,7 +115,7 @@ export function AddWidgetModal() {
                   </select>
                 </label>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Field label="Sabit katkı (TL)" name="default_fixed" type="number" placeholder="6.50" />
                 <Field label="VEYA % oran" name="default_percentage" type="number" placeholder="1.5" />
               </div>

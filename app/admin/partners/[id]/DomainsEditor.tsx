@@ -45,7 +45,7 @@ export function DomainsEditor({
           className="mt-1 w-full bg-surface border border-border text-text rounded-lg px-3 py-2 text-sm font-mono"
         />
       </label>
-      <div className="flex items-center gap-3 mt-2">
+      <div className="flex flex-wrap items-center gap-3 mt-2">
         <button
           onClick={save}
           disabled={busy}

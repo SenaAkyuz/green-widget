@@ -103,7 +103,7 @@ export default function IntegrationPage() {
   const fmt = (n: number) => n.toLocaleString("tr-TR");
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8 min-w-0">
       <AdminHeader
         title="Entegrasyon"
         description="3 adımda kurulum · platform seç, kodu kopyala, yayına al"
@@ -162,7 +162,7 @@ export default function IntegrationPage() {
             <option value="dining">dining</option>
           </select>
         </Field>
-        <p className="text-xs text-muted flex-1 min-w-[200px]">
+        <p className="text-xs text-muted w-full sm:w-auto sm:flex-1 sm:min-w-[200px]">
           Snippet ve önizleme bu değerlerle canlı güncellenir.
         </p>
       </div>
@@ -238,16 +238,16 @@ export default function IntegrationPage() {
           <SimField label="Ortalama katkı (TL)" value={avg} setValue={setAvg} step={1} />
           <SimField label="Kabul oranı (%)" value={accept} setValue={setAccept} step={5} max={100} />
         </div>
-        <div className="mt-5 grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             { l: "Günlük gelir", v: `${fmt(sim.daily)} TL` },
             { l: "Aylık gelir", v: `${fmt(sim.monthly)} TL` },
             { l: "Yıllık gelir", v: `${fmt(sim.yearly)} TL` },
             { l: "Yönetilen CO₂ (yıl)", v: `${fmt(sim.carbon)} ton` },
           ].map((x) => (
-            <div key={x.l} className="bg-bg rounded-xl p-4 text-center border border-border">
+            <div key={x.l} className="min-w-0 bg-bg rounded-xl p-4 text-center border border-border">
               <div className="text-xs text-muted">{x.l}</div>
-              <div className="text-lg font-extrabold text-primary mt-1">{x.v}</div>
+              <div className="text-lg font-extrabold text-primary mt-1 truncate">{x.v}</div>
             </div>
           ))}
         </div>

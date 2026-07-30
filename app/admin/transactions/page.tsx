@@ -43,7 +43,7 @@ export default async function TransactionsPage({
   }));
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8 min-w-0">
       <AdminHeader
         title="İşlemler"
         description={`${rows.length} işlem · ${rangeLabel(range)}`}
@@ -102,65 +102,123 @@ export default async function TransactionsPage({
         </a>
       </form>
 
-      <div className="bg-surface border border-border rounded-2xl shadow-sm overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left text-xs text-muted border-b border-border">
-              <th className="px-5 py-3 font-medium">Tarih</th>
-              <th className="px-5 py-3 font-medium">Merchant</th>
-              <th className="px-5 py-3 font-medium">Session</th>
-              <th className="px-5 py-3 font-medium text-right">Tutar</th>
-              <th className="px-5 py-3 font-medium text-right">Katkı</th>
-              <th className="px-5 py-3 font-medium text-right">CO₂</th>
-              <th className="px-5 py-3 font-medium">Durum</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((t) => (
-              <tr key={t.id} className="border-b border-border last:border-0 hover:bg-bg">
-                <td className="px-5 py-3 text-muted whitespace-nowrap">
-                  {dateTime(t.created_at)}
-                </td>
-                <td className="px-5 py-3 font-medium text-text">
-                  <span className="inline-flex items-center gap-2">
-                    {t.merchant_id}
+      <div className="bg-surface border border-border rounded-2xl shadow-sm">
+        {/* Mobil kart listesi — < md */}
+        <div className="md:hidden divide-y divide-border">
+          {rows.map((t) => (
+            <div key={t.id} className="p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="font-medium text-text flex items-center gap-2 flex-wrap">
+                    <span className="truncate">{t.merchant_id}</span>
                     {t.is_demo && (
-                      <span className="text-[9px] uppercase tracking-wide bg-bg text-muted px-1.5 py-0.5 rounded">
+                      <span className="shrink-0 text-[9px] uppercase tracking-wide bg-bg text-muted px-1.5 py-0.5 rounded">
                         demo
                       </span>
                     )}
-                  </span>
-                </td>
-                <td className="px-5 py-3 text-[11px] font-mono text-muted">
-                  {t.session_id.slice(0, 8)}…
-                </td>
-                <td className="px-5 py-3 text-right text-text">
-                  {money(t.original_amount, t.currency)}
-                </td>
-                <td className="px-5 py-3 text-right font-semibold text-primary">
-                  {t.contribution_selected ? `+${money(t.contribution_amount, t.currency)}` : "—"}
-                </td>
-                <td className="px-5 py-3 text-right text-muted">{t.carbon_kg} kg</td>
-                <td className="px-5 py-3">
-                  <span
-                    className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${
-                      STATUS_CLS[t.payment_status] ?? "bg-bg text-muted"
-                    }`}
-                  >
-                    {t.payment_status}
-                  </span>
-                </td>
+                  </div>
+                  <div className="text-[11px] text-muted mt-0.5">{dateTime(t.created_at)}</div>
+                </div>
+                <span
+                  className={`shrink-0 px-2 py-0.5 rounded-full text-[11px] font-semibold ${
+                    STATUS_CLS[t.payment_status] ?? "bg-bg text-muted"
+                  }`}
+                >
+                  {t.payment_status}
+                </span>
+              </div>
+              <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-xs">
+                <div>
+                  <dt className="text-muted">Tutar</dt>
+                  <dd className="text-text mt-0.5">{money(t.original_amount, t.currency)}</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Katkı</dt>
+                  <dd className="font-semibold text-primary mt-0.5">
+                    {t.contribution_selected ? `+${money(t.contribution_amount, t.currency)}` : "—"}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-muted">CO₂</dt>
+                  <dd className="text-text mt-0.5">{t.carbon_kg} kg</dd>
+                </div>
+                <div>
+                  <dt className="text-muted">Session</dt>
+                  <dd className="font-mono text-text mt-0.5 truncate">
+                    {t.session_id.slice(0, 8)}…
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          ))}
+          {rows.length === 0 && (
+            <p className="px-5 py-10 text-center text-muted text-sm">
+              Bu filtreyle eşleşen işlem yok.
+            </p>
+          )}
+        </div>
+
+        {/* Masaüstü tablo — md+ */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-muted border-b border-border">
+                <th className="px-5 py-3 font-medium">Tarih</th>
+                <th className="px-5 py-3 font-medium">Merchant</th>
+                <th className="px-5 py-3 font-medium">Session</th>
+                <th className="px-5 py-3 font-medium text-right">Tutar</th>
+                <th className="px-5 py-3 font-medium text-right">Katkı</th>
+                <th className="px-5 py-3 font-medium text-right">CO₂</th>
+                <th className="px-5 py-3 font-medium">Durum</th>
               </tr>
-            ))}
-            {rows.length === 0 && (
-              <tr>
-                <td colSpan={7} className="px-5 py-10 text-center text-muted">
-                  Bu filtreyle eşleşen işlem yok.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((t) => (
+                <tr key={t.id} className="border-b border-border last:border-0 hover:bg-bg">
+                  <td className="px-5 py-3 text-muted whitespace-nowrap">
+                    {dateTime(t.created_at)}
+                  </td>
+                  <td className="px-5 py-3 font-medium text-text">
+                    <span className="inline-flex items-center gap-2">
+                      {t.merchant_id}
+                      {t.is_demo && (
+                        <span className="text-[9px] uppercase tracking-wide bg-bg text-muted px-1.5 py-0.5 rounded">
+                          demo
+                        </span>
+                      )}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3 text-[11px] font-mono text-muted">
+                    {t.session_id.slice(0, 8)}…
+                  </td>
+                  <td className="px-5 py-3 text-right text-text">
+                    {money(t.original_amount, t.currency)}
+                  </td>
+                  <td className="px-5 py-3 text-right font-semibold text-primary">
+                    {t.contribution_selected ? `+${money(t.contribution_amount, t.currency)}` : "—"}
+                  </td>
+                  <td className="px-5 py-3 text-right text-muted">{t.carbon_kg} kg</td>
+                  <td className="px-5 py-3">
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${
+                        STATUS_CLS[t.payment_status] ?? "bg-bg text-muted"
+                      }`}
+                    >
+                      {t.payment_status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {rows.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="px-5 py-10 text-center text-muted">
+                    Bu filtreyle eşleşen işlem yok.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
